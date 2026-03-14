@@ -7,9 +7,11 @@
   --color-gray-dark: #595959;
   --color-gray-light: #8c8c8c;
   --color-error: #ff2f2f;
+  --font-sans: 'Space Grotesk', sans-serif;
 }
 
 body {
   background-color: #000000;
   color: #ffffff;
+  font-family: 'Space Grotesk', sans-serif;
 }
