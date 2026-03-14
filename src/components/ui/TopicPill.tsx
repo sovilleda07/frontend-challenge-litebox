@@ -1,12 +1,14 @@
 interface TopicPillProps {
   label: string;
   active?: boolean;
+  showClose?: boolean;
   onClick?: () => void;
 }
 
 export const TopicPill = ({
   label,
   active = false,
+  showClose = true,
   onClick,
 }: TopicPillProps) => {
   return (
@@ -24,7 +26,7 @@ export const TopicPill = ({
       `}
     >
       {label}
-      <span className="text-base">×</span>
+      {showClose && <span className="text-base">×</span>}
     </button>
   );
 };
