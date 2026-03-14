@@ -1,12 +1,12 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-lime: #D8F34E;
+  --color-lime: #d8f34e;
   --color-purple: #9c73f7;
   --color-purple-dark: #240f35;
   --color-gray-dark: #595959;
   --color-gray-light: #8c8c8c;
-  --color-error: #ff0000;
+  --color-error: #ff2f2f;
 }
 
 body {
