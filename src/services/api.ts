@@ -6,12 +6,23 @@ const litebox = axios.create({
 });
 
 const litetech = axios.create({
-  baseURL: import.meta.env.LITETECHAPI_URL,
+  baseURL: import.meta.env.VITE_LITETECHAPI_URL,
 });
 
 export const getPosts = async (): Promise<Post[]> => {
-  const { data } = await litebox.get('/api/posts');
-  return data;
+  const { data } = await litebox.get('/api/posts', {
+    params: { populate: 'coverImg' },
+  });
+
+  return data.data.map((item: any) => ({
+    id: item.id,
+    ...item.attributes,
+    coverImg: {
+      id: item.attributes.coverImg.data.id,
+      ...item.attributes.coverImg.data.attributes,
+      url: `${import.meta.env.VITE_LITEBOXAPI_URL}${item.attributes.coverImg.data.attributes.url}`,
+    },
+  }));
 };
 
 export const getPostById = async (id: number): Promise<Post> => {
