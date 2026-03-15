@@ -7,6 +7,7 @@ interface LinkProps {
   label?: string;
   onClick?: () => void;
   arrowColor?: ArrowColor;
+  textColor?: string;
 }
 
 const arrowAssets: Record<ArrowColor, string> = {
@@ -18,11 +19,19 @@ export const Link = ({
   label = 'Read',
   onClick,
   arrowColor = 'lime',
+  textColor = 'white',
 }: LinkProps) => {
+  const textColorClass =
+    textColor === 'black'
+      ? 'text-black'
+      : textColor === 'white'
+        ? 'text-white'
+        : '';
+
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-1 text-white text-sm font-medium transition-colors cursor-pointer"
+      className={`flex items-center gap-1 ${textColorClass} text-sm font-medium transition-colors cursor-pointer`}
     >
       {label}
       <img
