@@ -1,13 +1,26 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { createRelatedPost } from '../services/api';
 
-type UploadState = 'idle' | 'uploading' | 'uploaded' | 'success' | 'error';
+export type UploadState =
+  | 'idle'
+  | 'uploading'
+  | 'uploaded'
+  | 'success'
+  | 'error';
 
 export const useCreatePost = () => {
   const [uploadState, setUploadState] = useState<UploadState>('idle');
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [error, setError] = useState<string | null>(null);
+
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
 
   const simulateUpload = async () => {
     setUploadState('uploading');
@@ -15,12 +28,18 @@ export const useCreatePost = () => {
 
     await new Promise<void>((resolve) => {
       let progress = 0;
+
       intervalRef.current = setInterval(() => {
         progress += Math.random() * 20;
+
         if (progress >= 100) {
           progress = 100;
-          clearInterval(intervalRef.current!);
-          intervalRef.current = null;
+
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+          }
+
           setUploadProgress(100);
           resolve();
         } else {
@@ -42,6 +61,7 @@ export const useCreatePost = () => {
     formData.append('image', image);
 
     await createRelatedPost(formData);
+
     setUploadState('success');
   };
 
@@ -50,15 +70,14 @@ export const useCreatePost = () => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+
     setUploadState('idle');
     setUploadProgress(0);
-    setError(null);
   };
 
   return {
     uploadState,
     uploadProgress,
-    error,
     simulateUpload,
     confirmPost,
     triggerError,

@@ -9,13 +9,20 @@ interface NewPostModalProps {
   onClose: () => void;
 }
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const fieldWrapper = 'w-full md:w-[400px]';
+
 export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
   const [title, setTitle] = useState('');
   const [image, setImage] = useState<File | null>(null);
-  const [titleError, setTitleError] = useState('');
-  const [imageError, setImageError] = useState('');
-  const [apiError, setApiError] = useState('');
   const [errorSource, setErrorSource] = useState<'size' | 'api' | null>(null);
+
+  const [errors, setErrors] = useState({
+    title: '',
+    image: '',
+    api: '',
+  });
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -29,15 +36,36 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
 
   if (!isOpen) return null;
 
-  const handleClose = () => {
-    reset();
+  const state = {
+    idle: uploadState === 'idle',
+    uploading: uploadState === 'uploading',
+    uploaded: uploadState === 'uploaded',
+    success: uploadState === 'success',
+    error: uploadState === 'error',
+  };
+
+  const resetForm = () => {
     setTitle('');
     setImage(null);
-    setTitleError('');
-    setImageError('');
-    setApiError('');
+    setErrors({ title: '', image: '', api: '' });
     setErrorSource(null);
+  };
+
+  const handleClose = () => {
+    reset();
+    resetForm();
     onClose();
+  };
+
+  const validateForm = () => {
+    const newErrors = { title: '', image: '', api: '' };
+
+    if (!title.trim()) newErrors.title = 'Post title is required';
+    if (!image) newErrors.image = 'Please upload an image';
+
+    setErrors(newErrors);
+
+    return !newErrors.title && !newErrors.image;
   };
 
   const handleUploadClick = () => {
@@ -49,9 +77,9 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
     if (!file) return;
 
     setImage(file);
-    setImageError('');
+    setErrors((prev) => ({ ...prev, image: '' }));
 
-    if (file.size > 5 * 1024 * 1024) {
+    if (file.size > MAX_FILE_SIZE) {
       setErrorSource('size');
       triggerError();
       return;
@@ -61,53 +89,43 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
   };
 
   const handleConfirm = async () => {
-    if (uploadState === 'uploaded') {
-      if (!title.trim()) {
-        setTitleError('Post title is required');
-        return;
-      }
-      setApiError('');
-      try {
-        await confirmPost(title, image!);
-      } catch {
-        setErrorSource('api');
-        setApiError('Something went wrong. Please try again.');
-      }
-      return;
-    }
+    if (!validateForm()) return;
 
-    if (!title.trim()) {
-      setTitleError('Post title is required');
-      return;
-    }
-    if (!image) {
-      setImageError('Please upload an image');
-      return;
+    if (uploadState !== 'uploaded') return;
+
+    try {
+      await confirmPost(title, image!);
+    } catch {
+      setErrorSource('api');
+      setErrors((e) => ({
+        ...e,
+        api: 'Something went wrong. Please try again.',
+      }));
     }
   };
 
   const handleRetry = async () => {
     if (errorSource === 'api' && image && title) {
-      setApiError('');
+      setErrors((e) => ({ ...e, api: '' }));
       setErrorSource(null);
+
       try {
         await confirmPost(title, image);
       } catch {
         setErrorSource('api');
-        setApiError('Something went wrong. Please try again.');
+        setErrors((e) => ({
+          ...e,
+          api: 'Something went wrong. Please try again.',
+        }));
       }
+
       return;
     }
+
     setErrorSource(null);
     reset();
     setImage(null);
   };
-
-  const isIdle = uploadState === 'idle';
-  const isUploading = uploadState === 'uploading';
-  const isUploaded = uploadState === 'uploaded';
-  const isSuccess = uploadState === 'success';
-  const isError = uploadState === 'error';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
@@ -135,14 +153,12 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
           </button>
         </div>
 
-        {isSuccess ? (
+        {state.success ? (
           <div className="flex flex-col items-center gap-12 py-6">
-            <p
-              className="text-purple-dark font-medium text-[35px] leading-[120%] text-center"
-              style={{ fontFamily: 'Space Grotesk' }}
-            >
+            <p className="text-purple-dark font-medium text-[35px] leading-[120%] text-center">
               Your post was successfully uploaded!
             </p>
+
             <Button variant="black" onClick={handleClose}>
               Done
             </Button>
@@ -150,35 +166,32 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
         ) : (
           <div className="flex flex-col gap-10">
             <div className="flex flex-col gap-2 items-center px-10">
-              <h2
-                className="text-purple-dark font-medium text-[35px] leading-[120%] text-center"
-                style={{ fontFamily: 'Space Grotesk' }}
-              >
+              <h2 className="text-purple-dark font-medium text-[35px] leading-[120%] text-center">
                 Upload your post
               </h2>
-              <p
-                className="text-center text-gray-dark text-[18px] leading-[180%]"
-                style={{ fontFamily: 'Space Grotesk' }}
-              >
+
+              <p className="text-center text-gray-dark text-[18px] leading-[180%]">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Suspendisse commodo libero.
               </p>
             </div>
 
             <div className="flex flex-col gap-6 items-center">
-              <div className="w-full md:w-[400px]">
+              <div className={fieldWrapper}>
                 <Input
                   placeholder="Post Title"
                   value={title}
                   onChange={(e) => {
                     setTitle(e.target.value);
-                    if (titleError) setTitleError('');
+                    if (errors.title) {
+                      setErrors((prev) => ({ ...prev, title: '' }));
+                    }
                   }}
-                  error={titleError || undefined}
+                  error={errors.title || undefined}
                 />
               </div>
 
-              {isIdle && (
+              {state.idle && (
                 <>
                   <input
                     ref={fileInputRef}
@@ -187,7 +200,8 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
                     className="hidden"
                     onChange={handleFileChange}
                   />
-                  <div className="w-full md:w-[400px] flex flex-col gap-1">
+
+                  <div className={`${fieldWrapper} flex flex-col gap-1`}>
                     <button
                       onClick={handleUploadClick}
                       className="
@@ -196,9 +210,8 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
                         flex items-center justify-center gap-2
                         text-black text-[16px]
                       "
-                      style={{ fontFamily: 'Space Grotesk' }}
                     >
-                      {image ? image.name : 'Upload image'}
+                      {image?.name ?? 'Upload image'}
                       <svg
                         width="20"
                         height="20"
@@ -214,38 +227,30 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
                         />
                       </svg>
                     </button>
-                    {imageError && (
-                      <span
-                        className="text-error text-sm"
-                        style={{ fontFamily: 'Space Grotesk' }}
-                      >
-                        {imageError}
-                      </span>
+
+                    {errors.image && (
+                      <span className="text-error text-sm">{errors.image}</span>
                     )}
                   </div>
                 </>
               )}
 
-              {(isUploading || isUploaded) && (
-                <div className="w-full md:w-[400px] flex flex-col gap-2">
+              {(state.uploading || state.uploaded) && (
+                <div className={`${fieldWrapper} flex flex-col gap-2`}>
                   <Loader
-                    status={isUploading ? 'loading' : 'success'}
+                    status={state.uploading ? 'loading' : 'success'}
                     progress={uploadProgress}
                     onCancel={reset}
                   />
-                  {apiError && (
-                    <span
-                      className="text-error text-sm"
-                      style={{ fontFamily: 'Space Grotesk' }}
-                    >
-                      {apiError}
-                    </span>
+
+                  {errors.api && (
+                    <span className="text-error text-sm">{errors.api}</span>
                   )}
                 </div>
               )}
 
-              {isError && (
-                <div className="w-full md:w-[400px]">
+              {state.error && (
+                <div className={fieldWrapper}>
                   <Loader status="error" progress={0} onRetry={handleRetry} />
                 </div>
               )}
@@ -255,7 +260,7 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
               <Button
                 variant="black"
                 onClick={handleConfirm}
-                disabled={isUploading}
+                disabled={state.uploading}
               >
                 Confirm
               </Button>
