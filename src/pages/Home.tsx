@@ -58,7 +58,7 @@ export const Home = () => {
   return (
     <div className="min-h-screen flex flex-col bg-black">
       <Navbar onNewPost={() => setShowModal(true)} />
-      <main className="flex flex-col gap-14 px-4 md:px-16 max-w-[1440px] mx-auto w-full">
+      <main className="flex flex-col gap-14 px-4 md:px-16 max-w-[1440px] mx-auto w-full pt-[81px]">
         {heroPost && <HeroPost post={heroPost} />}
         <TopicsFilter
           topics={topics}
