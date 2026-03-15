@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router';
 import type { Post } from '../../types';
 import { PostCard } from './PostCard';
+import { Banner } from './Banner';
 
 interface PostGridProps {
   posts: Post[];
@@ -8,7 +9,6 @@ interface PostGridProps {
 
 export const PostGrid = ({ posts }: PostGridProps) => {
   const navigate = useNavigate();
-
   const goToPost = (id: number | string) => navigate(`/post/${id}`);
 
   const groups = [];
@@ -24,15 +24,12 @@ export const PostGrid = ({ posts }: PostGridProps) => {
     reverse?: boolean;
   }) => {
     if (group.length < 3) return null;
-
     const [a, b, c] = group;
-
     return (
       <div className="flex gap-[33px]">
         {!reverse && (
           <PostCard post={a} size="large" onClick={() => goToPost(a.id)} />
         )}
-
         <div className="flex flex-col gap-[33px]">
           <PostCard
             post={reverse ? a : b}
@@ -45,7 +42,6 @@ export const PostGrid = ({ posts }: PostGridProps) => {
             onClick={() => goToPost((reverse ? b : c).id)}
           />
         </div>
-
         {reverse && (
           <PostCard post={c} size="large" onClick={() => goToPost(c.id)} />
         )}
@@ -56,19 +52,25 @@ export const PostGrid = ({ posts }: PostGridProps) => {
   return (
     <div className="flex flex-col gap-[56px] w-full max-w-[976px]">
       <div className="flex flex-col items-center gap-8 md:hidden">
-        {posts.map((post) => (
-          <PostCard
-            key={post.id}
-            post={post}
-            size="small"
-            onClick={() => goToPost(post.id)}
-          />
+        {posts.map((post, index) => (
+          <>
+            <PostCard
+              key={post.id}
+              post={post}
+              size="small"
+              onClick={() => goToPost(post.id)}
+            />
+            {index === 2 && <Banner />}
+          </>
         ))}
       </div>
 
       <div className="hidden md:flex flex-col gap-[56px]">
         {groups.map((group, index) => (
-          <DesktopGroup key={index} group={group} reverse={index % 2 === 1} />
+          <>
+            <DesktopGroup key={index} group={group} reverse={index % 2 === 1} />
+            {index === 0 && <Banner />}
+          </>
         ))}
       </div>
     </div>
