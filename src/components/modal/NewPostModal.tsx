@@ -10,13 +10,11 @@ interface NewPostModalProps {
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
-const fieldWrapper = 'w-full md:w-[400px]';
 
 export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
   const [title, setTitle] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [errorSource, setErrorSource] = useState<'size' | 'api' | null>(null);
-
   const [errors, setErrors] = useState({
     title: '',
     image: '',
@@ -59,12 +57,9 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
 
   const validateForm = () => {
     const newErrors = { title: '', image: '', api: '' };
-
     if (!title.trim()) newErrors.title = 'Post title is required';
     if (!image) newErrors.image = 'Please upload an image';
-
     setErrors(newErrors);
-
     return !newErrors.title && !newErrors.image;
   };
 
@@ -90,7 +85,6 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
 
   const handleConfirm = async () => {
     if (!validateForm()) return;
-
     if (uploadState !== 'uploaded') return;
 
     try {
@@ -108,7 +102,6 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
     if (errorSource === 'api' && image && title) {
       setErrors((e) => ({ ...e, api: '' }));
       setErrorSource(null);
-
       try {
         await confirmPost(title, image);
       } catch {
@@ -118,7 +111,6 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
           api: 'Something went wrong. Please try again.',
         }));
       }
-
       return;
     }
 
@@ -131,7 +123,7 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div
         className="
-          bg-lime w-[calc(100%-48px)] md:w-[640px]
+          bg-lime w-[330px] md:w-[640px]
           border-[3px] border-black
           shadow-[10px_10px_0px_0px_#000000]
           p-10 flex flex-col
@@ -158,26 +150,24 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
             <p className="text-purple-dark font-medium text-[35px] leading-[120%] text-center">
               Your post was successfully uploaded!
             </p>
-
             <Button variant="black" onClick={handleClose}>
               Done
             </Button>
           </div>
         ) : (
-          <div className="flex flex-col gap-10">
-            <div className="flex flex-col gap-2 items-center px-10">
+          <div className="flex flex-col gap-8 md:gap-10">
+            <div className="flex flex-col gap-2 items-center md:px-10">
               <h2 className="text-purple-dark font-medium text-[35px] leading-[120%] text-center">
                 Upload your post
               </h2>
-
               <p className="text-center text-gray-dark text-[18px] leading-[180%]">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Suspendisse commodo libero.
               </p>
             </div>
 
-            <div className="flex flex-col gap-6 items-center">
-              <div className={fieldWrapper}>
+            <div className="flex flex-col gap-4 md:gap-6 items-center">
+              <div className="w-full md:w-[400px]">
                 <Input
                   placeholder="Post Title"
                   value={title}
@@ -200,8 +190,7 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
                     className="hidden"
                     onChange={handleFileChange}
                   />
-
-                  <div className={`${fieldWrapper} flex flex-col gap-1`}>
+                  <div className="w-full md:w-[400px] flex flex-col gap-1">
                     <button
                       onClick={handleUploadClick}
                       className="
@@ -227,7 +216,6 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
                         />
                       </svg>
                     </button>
-
                     {errors.image && (
                       <span className="text-error text-sm">{errors.image}</span>
                     )}
@@ -236,13 +224,12 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
               )}
 
               {(state.uploading || state.uploaded) && (
-                <div className={`${fieldWrapper} flex flex-col gap-2`}>
+                <div className="w-full md:w-[400px] flex flex-col gap-2">
                   <Loader
                     status={state.uploading ? 'loading' : 'success'}
                     progress={uploadProgress}
                     onCancel={reset}
                   />
-
                   {errors.api && (
                     <span className="text-error text-sm">{errors.api}</span>
                   )}
@@ -250,7 +237,7 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
               )}
 
               {state.error && (
-                <div className={fieldWrapper}>
+                <div className="w-full md:w-[400px]">
                   <Loader status="error" progress={0} onRetry={handleRetry} />
                 </div>
               )}
@@ -261,6 +248,7 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
                 variant="black"
                 onClick={handleConfirm}
                 disabled={state.uploading}
+                className="w-full md:w-auto"
               >
                 Confirm
               </Button>
