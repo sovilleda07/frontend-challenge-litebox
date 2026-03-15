@@ -24,8 +24,23 @@ export const PostGrid = ({ posts }: PostGridProps) => {
     group: Post[];
     reverse?: boolean;
   }) => {
-    if (group.length < 3) return null;
+    if (group.length === 0) return null;
+
     const [a, b, c] = group;
+
+    if (group.length === 1) {
+      return <PostCard post={a} size="large" onClick={() => goToPost(a.id)} />;
+    }
+
+    if (group.length === 2) {
+      return (
+        <div className="flex gap-[33px]">
+          <PostCard post={a} size="small" onClick={() => goToPost(a.id)} />
+          <PostCard post={b} size="small" onClick={() => goToPost(b.id)} />
+        </div>
+      );
+    }
+
     return (
       <div className="flex gap-[33px]">
         {!reverse && (

@@ -51,9 +51,10 @@ export const Home = () => {
   };
 
   const heroPost = posts[0];
-  const gridPosts = filteredPosts.slice(1, 10);
   const mostViewedPosts = posts.slice(0, 4);
   const topics = ['All', ...new Set(posts.map((p) => p.topic))];
+  const isFiltered = !activeTopics.includes('All');
+  const gridPosts = isFiltered ? filteredPosts : filteredPosts.slice(1, 10);
 
   return (
     <div className="min-h-screen flex flex-col bg-black">
