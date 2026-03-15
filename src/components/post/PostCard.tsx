@@ -76,7 +76,6 @@ const InfoPanel = ({ post, variant, theme, onClick }: InfoPanelProps) => {
       >
         <h2
           className={`${themeStyles.title} ${styles.title} font-bold`}
-          style={{ fontFamily: 'Space Grotesk' }}
         >
           {post.title}
         </h2>
@@ -92,7 +91,6 @@ const InfoPanel = ({ post, variant, theme, onClick }: InfoPanelProps) => {
             <img src={readIcon} alt="read time" className="w-4 h-4" />
             <span
               className="text-gray-dark text-[14px] leading-[160%]"
-              style={{ fontFamily: 'Space Grotesk' }}
             >
               {post.readTime} mins
             </span>

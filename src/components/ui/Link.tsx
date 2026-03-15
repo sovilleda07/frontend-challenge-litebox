@@ -37,7 +37,7 @@ export const Link = ({
       <img
         src={arrowAssets[arrowColor]}
         alt="arrow"
-        style={{ width: '24px' }}
+        className="w-[24px]"
       />
     </button>
   );

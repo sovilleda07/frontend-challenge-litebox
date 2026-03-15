@@ -13,17 +13,12 @@ export const Navbar = ({ onNewPost }: NavbarProps) => {
         <img
           src={logoAsterisk}
           alt="lite-tech asterisk"
-          style={{ width: '28px', height: '28px' }}
+          className="w-[28px] h-[28px]"
         />
         <img
           src={logoName}
           alt="lite-tech"
-          style={{
-            width: '137px',
-            height: '25px',
-            marginLeft: '12px',
-            marginTop: '1px',
-          }}
+          className="w-[137px] h-[25px] ml-[12px] mt-[1px]"
         />
       </div>
 

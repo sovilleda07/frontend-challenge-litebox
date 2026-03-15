@@ -66,40 +66,8 @@ export const PostGrid = ({ posts }: PostGridProps) => {
     );
   };
 
-  // return (
-  //   <div className="flex flex-col gap-[56px] w-full max-w-[976px]">
-  //     <div className="flex flex-col items-center gap-8 md:hidden">
-  //       {posts.map((post, index) => (
-  //         <Fragment key={post.id}>
-  //           <PostCard
-  //             post={post}
-  //             variant="sm"
-  //             onClick={() => goToPost(post.id)}
-  //           />
-  //           {index === 2 && <Banner />}
-  //         </Fragment>
-  //       ))}
-  //     </div>
-
-  //     <div className="hidden md:flex flex-col gap-[56px]">
-  //       {groups.map((group, index) => (
-  //         <Fragment key={index}>
-  //           <DesktopGroup group={group} reverse={index % 2 === 1} />
-  //           {index === 0 && <Banner />}
-  //         </Fragment>
-  //       ))}
-  //     </div>
-
-  //     <div className="flex justify-center">
-  //       <Button variant="primary" className="w-full md:w-auto">
-  //         Load more
-  //       </Button>
-  //     </div>
-  //   </div>
-  // );
   return (
     <div className="flex flex-col gap-[56px] w-full max-w-[976px]">
-      {/* Mobile - visible solo bajo 768px */}
       <div className="flex flex-col gap-8 w-full md:hidden">
         {posts.map((post, index) => (
           <Fragment key={post.id}>
@@ -113,7 +81,6 @@ export const PostGrid = ({ posts }: PostGridProps) => {
         ))}
       </div>
 
-      {/* Desktop - visible solo sobre 768px */}
       <div className="hidden md:flex flex-col gap-[56px]">
         {groups.map((group, index) => (
           <Fragment key={index}>
