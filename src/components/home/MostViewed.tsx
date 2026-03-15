@@ -22,10 +22,7 @@ export const MostViewed = ({ posts }: MostViewedProps) => {
               className="flex items-center justify-between cursor-pointer w-[304px] h-[80px]"
               onClick={() => navigate(`/post/${post.id}`)}
             >
-              <p
-                className="text-gray-light font-medium text-sm leading-[150%]"
-                style={{ width: '216px' }}
-              >
+              <p className="text-gray-light font-medium text-sm leading-[150%] w-[216px]">
                 {post.title}
               </p>
               <div className="overflow-hidden shrink-0 w-[80px] h-[80px] p-[10px]">
