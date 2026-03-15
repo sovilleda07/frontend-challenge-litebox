@@ -5,6 +5,7 @@ import { HeroPost } from '../components/home/HeroPost';
 import { TopicsFilter } from '../components/home/TopicsFilter';
 import { PostGrid } from '../components/home/PostGrid';
 import { MostViewed } from '../components/home/MostViewed';
+import { NewPostModal } from '../components/modal/NewPostModal';
 import { getPosts } from '../services/api';
 import type { Post } from '../types';
 
@@ -36,11 +37,9 @@ export const Home = () => {
       setFilteredPosts(posts);
       return;
     }
-
     const newTopics = activeTopics.includes(topic)
       ? activeTopics.filter((t) => t !== topic)
       : [...activeTopics.filter((t) => t !== 'All'), topic];
-
     if (newTopics.length === 0) {
       setActiveTopics(['All']);
       setFilteredPosts(posts);
@@ -59,16 +58,13 @@ export const Home = () => {
   return (
     <div className="min-h-screen flex flex-col bg-black">
       <Navbar onNewPost={() => setShowModal(true)} />
-
       <main className="flex flex-col gap-14 px-4 md:px-16 max-w-[1440px] mx-auto w-full">
         {heroPost && <HeroPost post={heroPost} />}
-
         <TopicsFilter
           topics={topics}
           activeTopics={activeTopics}
           onToggle={handleToggleTopic}
         />
-
         <div className="flex gap-[29px] md:mb-[238px]">
           {loading ? (
             <p className="text-white">Loading...</p>
@@ -80,17 +76,8 @@ export const Home = () => {
           )}
         </div>
       </main>
-
       <Footer />
-
-      {showModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-          <div className="bg-lime p-8">
-            <button onClick={() => setShowModal(false)}>X</button>
-            <p className="text-black">Modal coming soon</p>
-          </div>
-        </div>
-      )}
+      <NewPostModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 };
