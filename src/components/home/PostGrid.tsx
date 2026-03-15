@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { useNavigate } from 'react-router';
 import type { Post } from '../../types';
-import { PostCard } from './PostCard';
+import { PostCard } from '../post/PostCard';
 import { Banner } from './Banner';
 import { Button } from '../ui/Button';
 
@@ -30,14 +30,14 @@ export const PostGrid = ({ posts }: PostGridProps) => {
     const [a, b, c] = group;
 
     if (group.length === 1) {
-      return <PostCard post={a} size="large" onClick={() => goToPost(a.id)} />;
+      return <PostCard post={a} variant="lg" onClick={() => goToPost(a.id)} />;
     }
 
     if (group.length === 2) {
       return (
         <div className="flex gap-[33px]">
-          <PostCard post={a} size="small" onClick={() => goToPost(a.id)} />
-          <PostCard post={b} size="small" onClick={() => goToPost(b.id)} />
+          <PostCard post={a} variant="md" onClick={() => goToPost(a.id)} />
+          <PostCard post={b} variant="md" onClick={() => goToPost(b.id)} />
         </div>
       );
     }
@@ -45,35 +45,67 @@ export const PostGrid = ({ posts }: PostGridProps) => {
     return (
       <div className="flex gap-[33px]">
         {!reverse && (
-          <PostCard post={a} size="large" onClick={() => goToPost(a.id)} />
+          <PostCard post={a} variant="lg" onClick={() => goToPost(a.id)} />
         )}
         <div className="flex flex-col gap-[33px]">
           <PostCard
             post={reverse ? a : b}
-            size="small"
+            variant="md"
             onClick={() => goToPost((reverse ? a : b).id)}
           />
           <PostCard
             post={reverse ? b : c}
-            size="small"
+            variant="md"
             onClick={() => goToPost((reverse ? b : c).id)}
           />
         </div>
         {reverse && (
-          <PostCard post={c} size="large" onClick={() => goToPost(c.id)} />
+          <PostCard post={c} variant="lg" onClick={() => goToPost(c.id)} />
         )}
       </div>
     );
   };
 
+  // return (
+  //   <div className="flex flex-col gap-[56px] w-full max-w-[976px]">
+  //     <div className="flex flex-col items-center gap-8 md:hidden">
+  //       {posts.map((post, index) => (
+  //         <Fragment key={post.id}>
+  //           <PostCard
+  //             post={post}
+  //             variant="sm"
+  //             onClick={() => goToPost(post.id)}
+  //           />
+  //           {index === 2 && <Banner />}
+  //         </Fragment>
+  //       ))}
+  //     </div>
+
+  //     <div className="hidden md:flex flex-col gap-[56px]">
+  //       {groups.map((group, index) => (
+  //         <Fragment key={index}>
+  //           <DesktopGroup group={group} reverse={index % 2 === 1} />
+  //           {index === 0 && <Banner />}
+  //         </Fragment>
+  //       ))}
+  //     </div>
+
+  //     <div className="flex justify-center">
+  //       <Button variant="primary" className="w-full md:w-auto">
+  //         Load more
+  //       </Button>
+  //     </div>
+  //   </div>
+  // );
   return (
     <div className="flex flex-col gap-[56px] w-full max-w-[976px]">
-      <div className="flex flex-col items-center gap-8 md:hidden">
+      {/* Mobile - visible solo bajo 768px */}
+      <div className="flex flex-col gap-8 w-full md:hidden">
         {posts.map((post, index) => (
           <Fragment key={post.id}>
             <PostCard
               post={post}
-              size="small"
+              variant="sm"
               onClick={() => goToPost(post.id)}
             />
             {index === 2 && <Banner />}
@@ -81,6 +113,7 @@ export const PostGrid = ({ posts }: PostGridProps) => {
         ))}
       </div>
 
+      {/* Desktop - visible solo sobre 768px */}
       <div className="hidden md:flex flex-col gap-[56px]">
         {groups.map((group, index) => (
           <Fragment key={index}>
