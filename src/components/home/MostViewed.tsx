@@ -23,7 +23,7 @@ export const MostViewed = ({ posts }: MostViewedProps) => {
               onClick={() => navigate(`/post/${post.id}`)}
             >
               <p
-                className="text-white font-medium text-sm leading-[150%]"
+                className="text-gray-light font-medium text-sm leading-[150%]"
                 style={{ width: '216px' }}
               >
                 {post.title}
