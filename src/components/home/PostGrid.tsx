@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router';
 import type { Post } from '../../types';
 import { PostCard } from './PostCard';
 import { Banner } from './Banner';
+import { Button } from '../ui/Button';
 
 interface PostGridProps {
   posts: Post[];
@@ -72,6 +73,12 @@ export const PostGrid = ({ posts }: PostGridProps) => {
             {index === 0 && <Banner />}
           </>
         ))}
+      </div>
+
+      <div className="flex justify-center">
+        <Button variant="primary" className="w-full md:w-auto">
+          Load more
+        </Button>
       </div>
     </div>
   );
