@@ -26,8 +26,16 @@ export const getPosts = async (): Promise<Post[]> => {
 };
 
 export const getPostById = async (id: number): Promise<Post> => {
-  const { data } = await litebox.get(`/api/posts/${id}`);
-  return data;
+  const { data } = await litebox.get(`/api/post/${id}`);
+  const item = data.data;
+  return {
+    id: item.id,
+    ...item.attributes,
+    coverImg: {
+      id: item.attributes.coverImg.data.id,
+      ...item.attributes.coverImg.data.attributes,
+    },
+  };
 };
 
 export const getRelatedPosts = async (
@@ -41,10 +49,19 @@ export const getRelatedPosts = async (
 
 export const createRelatedPost = async (
   formData: FormData,
+  onProgress?: (progress: number) => void,
 ): Promise<RelatedPost> => {
   const { data } = await litetech.post('/api/post/related', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
+    },
+    onUploadProgress: (progressEvent) => {
+      if (onProgress && progressEvent.total) {
+        const progress = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total,
+        );
+        onProgress(progress);
+      }
     },
   });
   return data;
