@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { useNavigate } from 'react-router';
 import type { Post } from '../../types';
 import { PostCard } from './PostCard';
@@ -69,24 +70,23 @@ export const PostGrid = ({ posts }: PostGridProps) => {
     <div className="flex flex-col gap-[56px] w-full max-w-[976px]">
       <div className="flex flex-col items-center gap-8 md:hidden">
         {posts.map((post, index) => (
-          <>
+          <Fragment key={post.id}>
             <PostCard
-              key={post.id}
               post={post}
               size="small"
               onClick={() => goToPost(post.id)}
             />
             {index === 2 && <Banner />}
-          </>
+          </Fragment>
         ))}
       </div>
 
       <div className="hidden md:flex flex-col gap-[56px]">
         {groups.map((group, index) => (
-          <>
-            <DesktopGroup key={index} group={group} reverse={index % 2 === 1} />
+          <Fragment key={index}>
+            <DesktopGroup group={group} reverse={index % 2 === 1} />
             {index === 0 && <Banner />}
-          </>
+          </Fragment>
         ))}
       </div>
 
