@@ -1,6 +1,6 @@
 import logoAsterisk from '../../assets/logoAsterisk.png';
 import logoName from '../../assets/logoName.png';
-import arrow from '../../assets/arrow.png';
+import { Link } from '../ui/Link';
 
 interface NavbarProps {
   onNewPost?: () => void;
@@ -27,13 +27,7 @@ export const Navbar = ({ onNewPost }: NavbarProps) => {
         />
       </div>
 
-      <button
-        onClick={onNewPost}
-        className="flex items-center gap-3 text-white text-md font-medium hover:text-lime transition-colors cursor-pointer"
-      >
-        New post
-        <img src={arrow} alt="arrow" style={{ width: '24px' }} />
-      </button>
+      <Link label="New post" arrowColor="lime" onClick={onNewPost} />
     </nav>
   );
 };
