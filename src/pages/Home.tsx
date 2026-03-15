@@ -8,16 +8,6 @@ import { MostViewed } from '../components/home/MostViewed';
 import { getPosts } from '../services/api';
 import type { Post } from '../types';
 
-const ALL_TOPICS = [
-  'All',
-  'Diversity & Inclusion',
-  'Tech companies',
-  'Crypto',
-  'Security',
-  'Global',
-  'Leaks',
-];
-
 export const Home = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
@@ -63,6 +53,7 @@ export const Home = () => {
   const heroPost = posts[0];
   const gridPosts = filteredPosts.slice(1, 10);
   const mostViewedPosts = posts.slice(0, 4);
+  const topics = ['All', ...new Set(posts.map((p) => p.topic))];
 
   return (
     <div className="min-h-screen flex flex-col bg-black">
@@ -72,7 +63,7 @@ export const Home = () => {
         {heroPost && <HeroPost post={heroPost} />}
 
         <TopicsFilter
-          topics={ALL_TOPICS}
+          topics={topics}
           activeTopics={activeTopics}
           onToggle={handleToggleTopic}
         />
