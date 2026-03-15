@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { Post, RelatedPost } from '../types';
 
 const litebox = axios.create({
-  baseURL: import.meta.env.LITEBOXAPI_URL,
+  baseURL: import.meta.env.VITE_LITEBOXAPI_URL,
 });
 
 const litetech = axios.create({
