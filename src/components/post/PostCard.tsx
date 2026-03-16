@@ -19,6 +19,11 @@ const cardVariants = {
     info: 'w-full md:w-[508px]',
     title: 'text-[18px] leading-[150%]',
   },
+  related: {
+    wrapper: 'w-full md:h-[378px]',
+    info: 'w-full',
+    title: 'text-[18px] leading-[150%]',
+  },
   hero: {
     wrapper: 'w-full md:h-[348px]',
     info: 'w-full md:w-[557px]',
