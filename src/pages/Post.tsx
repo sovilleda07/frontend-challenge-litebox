@@ -31,7 +31,10 @@ export const PostPage = () => {
         ) : post ? (
           <>
             <PostDetail post={post} mostViewedPosts={mostViewedPosts} />
-            <RelatedPosts posts={relatedPosts} />
+            <RelatedPosts
+              posts={relatedPosts}
+              onNewPost={() => setShowModal(true)}
+            />
           </>
         ) : (
           <p className="text-black p-8">Post not found</p>
