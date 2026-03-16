@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useCreatePost } from '../../hooks/useCreatePost';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
@@ -31,8 +32,6 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
     triggerError,
     reset,
   } = useCreatePost();
-
-  if (!isOpen) return null;
 
   const state = {
     idle: uploadState === 'idle',
@@ -120,142 +119,170 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div
-        className="
-          bg-lime w-[330px] md:w-[640px]
-          border-[3px] border-black
-          shadow-[10px_10px_0px_0px_#000000]
-          p-10 flex flex-col
-        "
-      >
-        <div className="flex justify-end p-[10px]">
-          <button
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {/* Overlay */}
+          <motion.div
+            className="absolute inset-0 bg-black/60"
             onClick={handleClose}
-            className="w-12 h-12 flex items-center justify-center"
-          >
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M18 6L6 18M6 6l12 12"
-                stroke="#000"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-        </div>
+          />
 
-        {state.success ? (
-          <div className="flex flex-col items-center gap-12 py-6">
-            <p className="text-purple-dark font-medium text-[35px] leading-[120%] text-center">
-              Your post was successfully uploaded!
-            </p>
-            <Button variant="black" onClick={handleClose}>
-              Done
-            </Button>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-8 md:gap-10">
-            <div className="flex flex-col gap-2 items-center md:px-10">
-              <h2 className="text-purple-dark font-medium text-[35px] leading-[120%] text-center">
-                Upload your post
-              </h2>
-              <p className="text-center text-gray-dark text-[18px] leading-[180%]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse commodo libero.
-              </p>
+          {/* Modal */}
+          <motion.div
+            className="
+              relative z-10
+              bg-lime w-[330px] md:w-[640px]
+              border-[3px] border-black
+              shadow-[10px_10px_0px_0px_#000000]
+              p-10 flex flex-col
+            "
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+          >
+            <div className="flex justify-end p-[10px]">
+              <button
+                onClick={handleClose}
+                className="w-12 h-12 flex items-center justify-center"
+              >
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M18 6L6 18M6 6l12 12"
+                    stroke="#000"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
             </div>
 
-            <div className="flex flex-col gap-4 md:gap-6 items-center">
-              <div className="w-full md:w-[400px]">
-                <Input
-                  placeholder="Post Title"
-                  value={title}
-                  onChange={(e) => {
-                    setTitle(e.target.value);
-                    if (errors.title) {
-                      setErrors((prev) => ({ ...prev, title: '' }));
-                    }
-                  }}
-                  error={errors.title || undefined}
-                />
+            {state.success ? (
+              <div className="flex flex-col items-center gap-12 py-6">
+                <p className="text-purple-dark font-medium text-[35px] leading-[120%] text-center">
+                  Your post was successfully uploaded!
+                </p>
+                <Button variant="black" onClick={handleClose}>
+                  Done
+                </Button>
               </div>
+            ) : (
+              <div className="flex flex-col gap-8 md:gap-10">
+                <div className="flex flex-col gap-2 items-center md:px-10">
+                  <h2 className="text-purple-dark font-medium text-[35px] leading-[120%] text-center">
+                    Upload your post
+                  </h2>
+                  <p className="text-center text-gray-dark text-[18px] leading-[180%]">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Suspendisse commodo libero.
+                  </p>
+                </div>
 
-              {state.idle && (
-                <>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-                    className="hidden"
-                    onChange={handleFileChange}
-                  />
-                  <div className="w-full md:w-[400px] flex flex-col gap-1">
-                    <button
-                      onClick={handleUploadClick}
-                      className="
-                        w-full h-[56px]
-                        border-[2px] border-black bg-lime
-                        flex items-center justify-center gap-2
-                        text-black text-[16px]
-                      "
-                    >
-                      {image?.name ?? 'Upload image'}
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M12 4v16M4 12l8-8 8 8"
-                          stroke="#000"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                    {errors.image && (
-                      <span className="text-error text-sm">{errors.image}</span>
-                    )}
+                <div className="flex flex-col gap-4 md:gap-6 items-center">
+                  <div className="w-full md:w-[400px]">
+                    <Input
+                      placeholder="Post Title"
+                      value={title}
+                      onChange={(e) => {
+                        setTitle(e.target.value);
+                        if (errors.title) {
+                          setErrors((prev) => ({ ...prev, title: '' }));
+                        }
+                      }}
+                      error={errors.title || undefined}
+                    />
                   </div>
-                </>
-              )}
 
-              {(state.uploading || state.uploaded) && (
-                <div className="w-full md:w-[400px] flex flex-col gap-2">
-                  <Loader
-                    status={state.uploading ? 'loading' : 'success'}
-                    progress={uploadProgress}
-                    onCancel={reset}
-                  />
-                  {errors.api && (
-                    <span className="text-error text-sm">{errors.api}</span>
+                  {state.idle && (
+                    <>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                        className="hidden"
+                        onChange={handleFileChange}
+                      />
+                      <div className="w-full md:w-[400px] flex flex-col gap-1">
+                        <button
+                          onClick={handleUploadClick}
+                          className="
+                            w-full h-[56px]
+                            border-[2px] border-black bg-lime
+                            flex items-center justify-center gap-2
+                            text-black text-[16px]
+                          "
+                        >
+                          {image?.name ?? 'Upload image'}
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                          >
+                            <path
+                              d="M12 4v16M4 12l8-8 8 8"
+                              stroke="#000"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                        {errors.image && (
+                          <span className="text-error text-sm">
+                            {errors.image}
+                          </span>
+                        )}
+                      </div>
+                    </>
+                  )}
+
+                  {(state.uploading || state.uploaded) && (
+                    <div className="w-full md:w-[400px] flex flex-col gap-2">
+                      <Loader
+                        status={state.uploading ? 'loading' : 'success'}
+                        progress={uploadProgress}
+                        onCancel={reset}
+                      />
+                      {errors.api && (
+                        <span className="text-error text-sm">{errors.api}</span>
+                      )}
+                    </div>
+                  )}
+
+                  {state.error && (
+                    <div className="w-full md:w-[400px]">
+                      <Loader
+                        status="error"
+                        progress={0}
+                        onRetry={handleRetry}
+                      />
+                    </div>
                   )}
                 </div>
-              )}
 
-              {state.error && (
-                <div className="w-full md:w-[400px]">
-                  <Loader status="error" progress={0} onRetry={handleRetry} />
+                <div className="flex justify-center">
+                  <Button
+                    variant="black"
+                    onClick={handleConfirm}
+                    disabled={state.uploading}
+                    className="w-full md:w-auto"
+                  >
+                    Confirm
+                  </Button>
                 </div>
-              )}
-            </div>
-
-            <div className="flex justify-center">
-              <Button
-                variant="black"
-                onClick={handleConfirm}
-                disabled={state.uploading}
-                className="w-full md:w-auto"
-              >
-                Confirm
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+              </div>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
