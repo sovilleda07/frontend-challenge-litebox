@@ -18,6 +18,7 @@ export const HeroPost = ({ post }: HeroPostProps) => {
         post={post}
         variant="hero"
         theme="dark"
+        linkSize="md"
         onClick={() => navigate(`/post/${post.id}`)}
       />
     </div>

@@ -46,6 +46,7 @@ export const RelatedPosts = ({ posts, onNewPost }: RelatedPostsProps) => {
                       } as Post
                     }
                     variant="related"
+                    underlineOnHover
                     onClick={() => {
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                       navigate(`/post/${post.id}`);

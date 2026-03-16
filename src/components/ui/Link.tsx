@@ -1,10 +1,10 @@
-import arrowLime from '../../assets/arrow-lime.png';
-import arrowPurple from '../../assets/arrow-purple.png';
-import { FaChevronLeft } from 'react-icons/fa6';
+import { FaChevronLeft, FaArrowRightLong } from 'react-icons/fa6';
 
-type ArrowColor = 'lime' | 'purple';
+export type ArrowColor = 'lime' | 'purple' | 'white' | 'black';
 
 type LinkVariant = 'default' | 'breadcrumb';
+
+export type TextSize = 'sm' | 'md' | 'lg';
 
 interface LinkProps {
   label?: string;
@@ -12,13 +12,24 @@ interface LinkProps {
   arrowColor?: ArrowColor;
   textColor?: string;
   showArrow?: boolean;
+  showIcon?: boolean;
   variant?: LinkVariant;
   iconLeft?: React.ReactNode;
+  size?: TextSize;
+  underlineOnHover?: boolean;
 }
 
-const arrowAssets: Record<ArrowColor, string> = {
-  lime: arrowLime,
-  purple: arrowPurple,
+const textSizeMap: Record<TextSize, string> = {
+  sm: 'text-[14px]',
+  md: 'text-[16px]',
+  lg: 'text-[18px]',
+};
+
+const arrowColorMap: Record<ArrowColor, string> = {
+  lime: 'text-lime-400',
+  purple: 'text-purple-500',
+  white: 'text-white',
+  black: 'text-black',
 };
 
 export const Link = ({
@@ -27,8 +38,11 @@ export const Link = ({
   arrowColor = 'lime',
   textColor = 'white',
   showArrow = true,
+  showIcon = true,
   variant = 'default',
   iconLeft,
+  size = 'sm',
+  underlineOnHover = false,
 }: LinkProps) => {
   const textColorClass =
     textColor === 'black'
@@ -37,25 +51,37 @@ export const Link = ({
         ? 'text-white'
         : '';
 
-  const shouldShowArrow = variant === 'breadcrumb' ? false : showArrow;
+  const textSizeClass = textSizeMap[size];
+
+  const shouldShowArrow =
+    variant === 'breadcrumb' ? false : showArrow && showIcon;
+
   const defaultBreadcrumbIcon = (
-    <FaChevronLeft
-      className="w-[6px] h-[px] text-white"
-      aria-hidden="true"
-    />
+    <FaChevronLeft className="w-[6px] h-[6px] text-white" aria-hidden="true" />
   );
   const iconToRender =
     variant === 'breadcrumb' ? (iconLeft ?? defaultBreadcrumbIcon) : iconLeft;
 
+  const arrowColorClass = arrowColorMap[arrowColor] ?? 'text-lime-400';
+
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-1 ${textColorClass} text-sm font-medium transition-colors cursor-pointer`}
+      className={`group flex items-center gap-1 ${textColorClass} ${textSizeClass} font-medium transition-colors cursor-pointer`}
     >
       {iconToRender}
-      {label}
+      {underlineOnHover ? (
+        <span className="border-b border-transparent group-hover:border-current pb-[1px]">
+          {label}
+        </span>
+      ) : (
+        <span>{label}</span>
+      )}
       {shouldShowArrow && (
-        <img src={arrowAssets[arrowColor]} alt="arrow" className="w-[24px]" />
+        <FaArrowRightLong
+          className={`${arrowColorClass} group-hover:text-orange-500 transition-colors duration-200`}
+          aria-hidden="true"
+        />
       )}
     </button>
   );

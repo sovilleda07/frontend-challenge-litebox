@@ -30,14 +30,14 @@ export const PostGrid = ({ posts }: PostGridProps) => {
     const [a, b, c] = group;
 
     if (group.length === 1) {
-      return <PostCard post={a} variant="lg" onClick={() => goToPost(a.id)} />;
+      return <PostCard post={a} variant="lg" onClick={() => goToPost(a.id)} underlineOnHover />;
     }
 
     if (group.length === 2) {
       return (
         <div className="flex gap-[33px]">
-          <PostCard post={a} variant="md" onClick={() => goToPost(a.id)} />
-          <PostCard post={b} variant="md" onClick={() => goToPost(b.id)} />
+          <PostCard post={a} variant="md" onClick={() => goToPost(a.id)} underlineOnHover />
+          <PostCard post={b} variant="md" onClick={() => goToPost(b.id)} underlineOnHover />
         </div>
       );
     }
@@ -45,22 +45,24 @@ export const PostGrid = ({ posts }: PostGridProps) => {
     return (
       <div className="flex gap-[33px]">
         {!reverse && (
-          <PostCard post={a} variant="lg" onClick={() => goToPost(a.id)} />
+          <PostCard post={a} variant="lg" onClick={() => goToPost(a.id)} underlineOnHover />
         )}
         <div className="flex flex-col gap-[33px]">
           <PostCard
             post={reverse ? a : b}
             variant="md"
             onClick={() => goToPost((reverse ? a : b).id)}
+            underlineOnHover
           />
           <PostCard
             post={reverse ? b : c}
             variant="md"
             onClick={() => goToPost((reverse ? b : c).id)}
+            underlineOnHover
           />
         </div>
         {reverse && (
-          <PostCard post={c} variant="lg" onClick={() => goToPost(c.id)} />
+          <PostCard post={c} variant="lg" onClick={() => goToPost(c.id)} underlineOnHover />
         )}
       </div>
     );
@@ -75,6 +77,7 @@ export const PostGrid = ({ posts }: PostGridProps) => {
               post={post}
               variant="sm"
               onClick={() => goToPost(post.id)}
+              underlineOnHover
             />
             {index === 2 && <Banner />}
           </Fragment>

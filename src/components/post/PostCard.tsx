@@ -1,4 +1,5 @@
 import type { Post } from '../../types';
+import type { TextSize, ArrowColor } from '../ui/Link';
 import { TopicPill } from '../ui/TopicPill';
 import { Link } from '../ui/Link';
 import readIcon from '../../assets/readIcon.png';
@@ -39,6 +40,10 @@ interface PostCardProps {
   variant?: CardVariant;
   theme?: CardTheme;
   onClick?: () => void;
+  linkSize?: TextSize;
+  linkArrowColor?: ArrowColor;
+  showIcon?: boolean;
+  underlineOnHover?: boolean;
 }
 
 const themeVariants = {
@@ -59,9 +64,13 @@ interface InfoPanelProps {
   variant: CardVariant;
   theme: CardTheme;
   onClick?: () => void;
+  linkSize?: TextSize;
+  linkArrowColor?: ArrowColor;
+  showIcon?: boolean;
+  underlineOnHover?: boolean;
 }
 
-const InfoPanel = ({ post, variant, theme, onClick }: InfoPanelProps) => {
+const InfoPanel = ({ post, variant, theme, onClick, linkSize, linkArrowColor, showIcon, underlineOnHover }: InfoPanelProps) => {
   const themeStyles = themeVariants[theme];
   const styles = cardVariants[variant];
 
@@ -79,24 +88,23 @@ const InfoPanel = ({ post, variant, theme, onClick }: InfoPanelProps) => {
           flex flex-col gap-[10px]
         `}
       >
-        <h2
-          className={`${themeStyles.title} ${styles.title} font-bold`}
-        >
+        <h2 className={`${themeStyles.title} ${styles.title} font-bold`}>
           {post.title}
         </h2>
 
         <div className="flex items-center justify-between">
           <Link
             onClick={onClick}
-            arrowColor="purple"
+            size={linkSize ?? 'lg'}
+            arrowColor={linkArrowColor ?? 'purple'}
             textColor={themeStyles.link}
+            showIcon={showIcon}
+            underlineOnHover={underlineOnHover}
           />
 
           <div className="flex items-center gap-2">
             <img src={readIcon} alt="read time" className="w-4 h-4" />
-            <span
-              className="text-gray-dark text-[14px] leading-[160%]"
-            >
+            <span className="text-gray-dark text-[14px] leading-[160%]">
               {post.readTime} mins
             </span>
           </div>
@@ -111,6 +119,10 @@ export const PostCard = ({
   variant = 'md',
   theme = 'light',
   onClick,
+  linkSize,
+  linkArrowColor,
+  showIcon,
+  underlineOnHover,
 }: PostCardProps) => {
   const imageUrl = post.coverImg?.url ?? '';
   const styles = cardVariants[variant];
@@ -131,6 +143,10 @@ export const PostCard = ({
         variant={variant}
         theme={theme}
         onClick={onClick}
+        linkSize={linkSize}
+        linkArrowColor={linkArrowColor}
+        showIcon={showIcon}
+        underlineOnHover={underlineOnHover}
       />
     </div>
   );
