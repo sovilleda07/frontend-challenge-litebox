@@ -129,8 +129,7 @@ export const PostCard = ({
 
   return (
     <div
-      onClick={onClick}
-      className={`relative overflow-hidden cursor-pointer w-full h-[378px] ${styles.wrapper}`}
+      className={`relative overflow-hidden w-full h-[378px] ${styles.wrapper}`}
     >
       <img
         src={imageUrl}
