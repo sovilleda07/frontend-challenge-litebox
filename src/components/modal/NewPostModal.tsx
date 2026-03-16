@@ -128,13 +128,11 @@ export const NewPostModal = ({ isOpen, onClose }: NewPostModalProps) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          {/* Overlay */}
           <motion.div
             className="absolute inset-0 bg-black/60"
             onClick={handleClose}
           />
 
-          {/* Modal */}
           <motion.div
             className="
               relative z-10
