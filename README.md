@@ -4,7 +4,7 @@ A modern, responsive blog application built with React, TypeScript, and Tailwind
 
 ## Live Demo
 
-- **Frontend**: https://tu-url.netlify.app
+- **Frontend**: https://dev-sonia-daniela-villeda-guerra-fr.vercel.app
 - **Backend API**: https://dev-sonia-daniela-villeda-guerra-backend.onrender.com
 
 ## Tech Stack
