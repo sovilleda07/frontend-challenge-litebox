@@ -7,10 +7,12 @@ import { PostGrid } from '../components/home/PostGrid';
 import { MostViewed } from '../components/home/MostViewed';
 import { NewPostModal } from '../components/modal/NewPostModal';
 import { usePosts } from '../hooks/usePosts';
+import { useMostViewed } from '../hooks/useMostViewed';
 import type { Post } from '../types';
 
 export const Home = () => {
   const { posts, loading } = usePosts();
+  const { mostViewedPosts } = useMostViewed();
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [activeTopics, setActiveTopics] = useState<string[]>(['All']);
   const [showModal, setShowModal] = useState(false);
@@ -38,7 +40,7 @@ export const Home = () => {
   };
 
   const heroPost = posts[0];
-  const mostViewedPosts = posts.slice(0, 4);
+
   const topics = ['All', ...new Set(posts.map((p) => p.topic))];
   const isFiltered = !activeTopics.includes('All');
   const gridPosts = isFiltered ? filteredPosts : filteredPosts.slice(1, 10);

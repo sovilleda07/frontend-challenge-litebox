@@ -3,15 +3,16 @@ import type { Post } from '../../types';
 
 interface MostViewedProps {
   posts: Post[];
+  titleColor?: 'white' | 'black';
 }
 
-export const MostViewed = ({ posts }: MostViewedProps) => {
+export const MostViewed = ({ posts, titleColor = 'white' }: MostViewedProps) => {
   const navigate = useNavigate();
   const topPosts = posts.slice(0, 4);
 
   return (
     <div className="hidden md:flex flex-col gap-6 w-[304px]">
-      <h3 className="text-white font-semibold text-[18px] leading-none">
+      <h3 className={`font-semibold text-[18px] leading-none ${titleColor === 'black' ? 'text-black' : 'text-white'}`}>
         Most viewed
       </h3>
 

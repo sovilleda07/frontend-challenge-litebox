@@ -6,7 +6,7 @@ import { PostDetail } from '../components/post/PostDetail';
 import { RelatedPosts } from '../components/post/RelatedPosts';
 import { NewPostModal } from '../components/modal/NewPostModal';
 import { usePost } from '../hooks/usePost';
-import { usePosts } from '../hooks/usePosts';
+import { useMostViewed } from '../hooks/useMostViewed';
 import { useRelatedPosts } from '../hooks/useRelatedPosts';
 
 export const PostPage = () => {
@@ -16,11 +16,10 @@ export const PostPage = () => {
   const [showModal, setShowModal] = useState(false);
 
   const { post, loading: postLoading } = usePost(postId);
-  const { posts: allPosts, loading: postsLoading } = usePosts();
+  const { mostViewedPosts, loading: mostViewedLoading } = useMostViewed();
   const { relatedPosts, loading: relatedLoading } = useRelatedPosts(3);
 
-  const isLoading = postLoading || postsLoading || relatedLoading;
-  const mostViewedPosts = allPosts.slice(0, 4);
+  const isLoading = postLoading || mostViewedLoading || relatedLoading;
 
   return (
     <div className="min-h-screen flex flex-col bg-white">

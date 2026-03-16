@@ -138,7 +138,7 @@ export const PostDetail = ({ post, mostViewedPosts = [] }: PostDetailProps) => {
           </div>
 
           <div className="md:col-start-10 md:col-span-3">
-            <MostViewed posts={mostViewedPosts} />
+            <MostViewed posts={mostViewedPosts} titleColor="black" />
           </div>
         </div>
       </div>
