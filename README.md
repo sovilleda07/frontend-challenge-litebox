@@ -2,7 +2,12 @@
 
 A modern, responsive blog application built with React, TypeScript, and Tailwind CSS. This project allows users to browse posts, filter by topics, view post details with markdown support, and create new posts.
 
-## 🚀 Tech Stack
+## Live Demo
+
+- **Frontend**: https://tu-url.netlify.app
+- **Backend API**: https://dev-sonia-daniela-villeda-guerra-backend.onrender.com
+
+## Tech Stack
 
 - **React 19**: Latest version of React for building the user interface.
 - **TypeScript**: Ensuring type safety across the application.
@@ -13,7 +18,7 @@ A modern, responsive blog application built with React, TypeScript, and Tailwind
 - **React Markdown**: Rendering blog post content from markdown.
 - **React Icons**: Using Phosphor and FontAwesome icons for a premium feel.
 
-## ✨ Key Features
+## Key Features
 
 - **Hero Section**: Highlights the most recent featured post.
 - **Topic Filtering**: Easily filter posts by categories like "Technology", "Design", "Lifestyle", etc.
@@ -24,7 +29,7 @@ A modern, responsive blog application built with React, TypeScript, and Tailwind
 - **New Post Creation**: Modal-based interface for adding new blog entries.
 - **Responsive Design**: Optimized for mobile, tablet, and desktop screens.
 
-## 📂 Project Structure
+## Project Structure
 
 ```bash
 src/
@@ -42,21 +47,24 @@ src/
 └── index.css       # Global styles and Tailwind configuration
 ```
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 1. **Clone the repository**:
+
    ```bash
    git clone <repository-url>
    cd dev-sonia-daniela-villeda-guerra-frontend
    ```
 
 2. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Configure Environment Variables**:
    Create a `.env` file in the root directory based on `.env.example`:
+
    ```env
    VITE_API_URL=your_backend_api_url
    ```
@@ -67,7 +75,7 @@ src/
    ```
    The application will be available at `http://localhost:5173`.
 
-## 📦 Scripts
+## Scripts
 
 - `npm run dev`: Start the development server.
 - `npm run build`: Build the project for production.
@@ -75,4 +83,5 @@ src/
 - `npm run preview`: Locally preview the production build.
 
 ---
+
 Developed as part of the Litebox Frontend Challenge.
