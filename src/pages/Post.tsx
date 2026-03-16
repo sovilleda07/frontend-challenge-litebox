@@ -25,21 +25,19 @@ export const PostPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar onNewPost={() => setShowModal(true)} />
-      <div className="pt-[81px]">
-        {isLoading ? (
-          <p className="text-black p-8">Loading...</p>
-        ) : post ? (
-          <>
-            <PostDetail post={post} mostViewedPosts={mostViewedPosts} />
-            <RelatedPosts
-              posts={relatedPosts}
-              onNewPost={() => setShowModal(true)}
-            />
-          </>
-        ) : (
-          <p className="text-black p-8">Post not found</p>
-        )}
-      </div>
+      {isLoading ? (
+        <p className="text-black p-8">Loading...</p>
+      ) : post ? (
+        <>
+          <PostDetail post={post} mostViewedPosts={mostViewedPosts} />
+          <RelatedPosts
+            posts={relatedPosts}
+            onNewPost={() => setShowModal(true)}
+          />
+        </>
+      ) : (
+        <p className="text-black p-8">Post not found</p>
+      )}
       <Footer />
       <NewPostModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
