@@ -6,30 +6,18 @@ import { TopicsFilter } from '../components/home/TopicsFilter';
 import { PostGrid } from '../components/home/PostGrid';
 import { MostViewed } from '../components/home/MostViewed';
 import { NewPostModal } from '../components/modal/NewPostModal';
-import { getPosts } from '../services/api';
+import { usePosts } from '../hooks/usePosts';
 import type { Post } from '../types';
 
 export const Home = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const { posts, loading } = usePosts();
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [activeTopics, setActiveTopics] = useState<string[]>(['All']);
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const data = await getPosts();
-        setPosts(data);
-        setFilteredPosts(data);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPosts();
-  }, []);
+    setFilteredPosts(posts);
+  }, [posts]);
 
   const handleToggleTopic = (topic: string) => {
     if (topic === 'All') {
