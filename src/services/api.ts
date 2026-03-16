@@ -26,7 +26,7 @@ export const getPosts = async (): Promise<Post[]> => {
 };
 
 export const getPostById = async (id: number): Promise<Post> => {
-  const { data } = await litebox.get(`/api/post/${id}`);
+  const { data } = await litebox.get(`/api/posts/${id}`);
   const item = data.data;
   return {
     id: item.id,
@@ -34,6 +34,7 @@ export const getPostById = async (id: number): Promise<Post> => {
     coverImg: {
       id: item.attributes.coverImg.data.id,
       ...item.attributes.coverImg.data.attributes,
+      url: `${import.meta.env.VITE_LITEBOXAPI_URL}${item.attributes.coverImg.data.attributes.url}`,
     },
   };
 };
