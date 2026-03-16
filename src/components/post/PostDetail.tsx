@@ -67,8 +67,8 @@ export const PostDetail = ({ post, mostViewedPosts = [] }: PostDetailProps) => {
         </div>
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-4 md:px-16 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-y-0 md:gap-x-8">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-16 py-8 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-4 md:gap-y-0 md:gap-x-8">
           <div className="hidden md:flex flex-col gap-6 md:col-start-1 md:col-span-2 pt-2">
             <span className="text-black font-medium text-[14px]">Share on</span>
             <div className="flex items-center gap-6">
