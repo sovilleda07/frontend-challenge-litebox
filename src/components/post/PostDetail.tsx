@@ -24,13 +24,13 @@ export const PostDetail = ({ post, mostViewedPosts = [] }: PostDetailProps) => {
 
   return (
     <div className="w-full bg-white">
-      <div className="relative w-full h-[677px] min-h-[677px] flex items-end">
+      <div className="relative w-full h-[488px] md:h-[677px] flex items-end">
         <img
           src={post.coverImg?.url}
           alt={post.title}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="relative z-10 flex flex-col gap-0 pb-16 pl-16">
+        <div className="relative z-10 w-full flex flex-col gap-0 pb-8 pl-4 md:pb-16 md:pl-16 pr-4 md:pr-0">
           <div className="flex items-center gap-2 mb-[24px]">
             <Link
               label="Blog"
@@ -39,21 +39,21 @@ export const PostDetail = ({ post, mostViewedPosts = [] }: PostDetailProps) => {
               textColor="white"
             />
           </div>
-          <div className="bg-white inline-flex w-fit pt-6 pr-6 pl-6 pb-0">
+          <div className="bg-white inline-flex w-fit max-w-full pt-6 pr-6 pl-6 pb-0">
             <div className="flex items-center gap-4">
               <img
                 src={avatar}
                 alt="author"
                 className="w-10 h-10 rounded-full object-cover"
               />
-              <span className="text-black text-[20px] leading-[180%]">
+              <span className="text-black text-[16px] md:text-[20px] leading-[180%]">
                 By {post.author}
               </span>
             </div>
           </div>
-          <div className="bg-white w-[528px] flex flex-col gap-[10px] p-6">
+          <div className="bg-white w-full md:w-[528px] flex flex-col gap-[10px] p-6">
             <div className="flex flex-col gap-4">
-              <h1 className="text-black font-bold text-[35px] leading-[120%] w-[480px]">
+              <h1 className="text-black font-bold text-[28px] md:text-[35px] leading-[120%] w-full md:w-[480px]">
                 {post.title}
               </h1>
               <div className="flex items-center gap-[10px]">
