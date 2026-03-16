@@ -68,15 +68,15 @@ export const PostDetail = ({ post, mostViewedPosts = [] }: PostDetailProps) => {
       </div>
 
       <div className="max-w-[1440px] mx-auto px-4 md:px-16 py-16">
-        <div className="flex gap-8">
-          <div className="hidden md:flex flex-col gap-6 w-[168px] shrink-0 pt-2">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-y-0 md:gap-x-8">
+          <div className="hidden md:flex flex-col gap-6 md:col-start-1 md:col-span-2 pt-2">
             <span className="text-black font-medium text-[14px]">Share on</span>
-            <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-6">
               {shareIcons.map(({ icon, label }) => (
                 <button
-                  key={label}
+                  key={`desktop-${label}`}
                   aria-label={label}
-                  className="w-10 h-10 border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-colors"
+                  className="flex items-center justify-center text-black hover:text-gray-500 transition-colors"
                 >
                   {icon}
                 </button>
@@ -84,16 +84,16 @@ export const PostDetail = ({ post, mostViewedPosts = [] }: PostDetailProps) => {
             </div>
           </div>
 
-          <div className="flex-1 max-w-[641px]">
+          <div className="md:col-start-4 md:col-span-6">
             <ReactMarkdown
               components={{
                 h1: ({ children }) => (
-                  <h1 className="text-black font-bold text-[24px] leading-[130%] mb-4 mt-8 first:mt-0">
+                  <h1 className="text-black font-bold text-[21px] leading-[130%] mb-4 mt-8 first:mt-0">
                     {children}
                   </h1>
                 ),
                 p: ({ children }) => (
-                  <p className="text-black text-[16px] leading-[180%] mb-6">
+                  <p className="text-gray-dark font-normal text-[16px] leading-[180%] mb-6">
                     {children}
                   </p>
                 ),
@@ -101,12 +101,12 @@ export const PostDetail = ({ post, mostViewedPosts = [] }: PostDetailProps) => {
                   <img
                     src={src}
                     alt={alt}
-                    className="w-full object-cover my-8"
+                    className="w-full h-[294px] md:h-auto object-cover my-8"
                   />
                 ),
                 blockquote: ({ children }) => (
                   <blockquote className="border-l-4 border-lime pl-6 my-8">
-                    <div className="text-black font-bold text-[18px] leading-[150%] [&>p]:mb-0">
+                    <div className="text-black font-bold text-[21px] leading-[150%] [&>p]:mb-0">
                       {children}
                     </div>
                   </blockquote>
@@ -119,29 +119,27 @@ export const PostDetail = ({ post, mostViewedPosts = [] }: PostDetailProps) => {
               {POST_MARKDOWN}
             </ReactMarkdown>
 
-            <div className="flex md:hidden items-center gap-4 mt-8">
+            <div className="flex md:hidden flex-col gap-4 mt-8">
               <span className="text-black font-medium text-[14px]">
                 Share on
               </span>
-              {shareIcons.map(({ icon, label }) => (
-                <button
-                  key={label}
-                  aria-label={label}
-                  className="w-10 h-10 border-2 border-black flex items-center justify-center text-black"
-                >
-                  {icon}
-                </button>
-              ))}
+              <div className="flex items-center gap-6">
+                {shareIcons.map(({ icon, label }) => (
+                  <button
+                    key={`mobile-${label}`}
+                    aria-label={label}
+                    className="flex items-center justify-center text-black hover:text-gray-500 transition-colors"
+                  >
+                    {icon}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="hidden md:block w-[304px] shrink-0">
+          <div className="md:col-start-10 md:col-span-3">
             <MostViewed posts={mostViewedPosts} />
           </div>
-        </div>
-
-        <div className="md:hidden mt-12">
-          <MostViewed posts={mostViewedPosts} />
         </div>
       </div>
     </div>
